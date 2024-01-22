@@ -1,0 +1,23 @@
+{
+  "name": "$PROJECT_NAME",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "vite",
+    "tsc": "tsc --noEmit --watch",
+    "build": "vite build",
+    "clean": "rmdir /q 'dist'",
+    "release": "npm run clean; npm run build"
+  },
+  "dependencies": {
+    "@game.object/ts-class-entities": "file:E:/libs/my/typescript/ts-class-entities",
+    "@game.object/ts-game-toolbox": "file:E:/libs/my/typescript/ts-game-toolbox"
+  },
+  "devDependencies": {
+    "sass": "^1.69.5",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.2",
+    "mocha": "^10.2.0"
+  }
+}
+
