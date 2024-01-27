@@ -1,23 +1,24 @@
 {
-  "name": "$PROJECT_NAME",
+  "name": "180-falling-sand",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "start": "vite",
     "tsc": "tsc --noEmit --watch",
     "build": "vite build",
-    "clean": "rmdir /q 'dist'",
+    "clean": "Remove-Item -Force -Recurse dist",
     "release": "npm run clean; npm run build"
   },
   "dependencies": {
     "@game.object/ts-class-entities": "file:E:/libs/my/typescript/ts-class-entities",
-    "@game.object/ts-game-toolbox": "file:E:/libs/my/typescript/ts-game-toolbox"
+    "@game.object/ts-game-toolbox": "file:E:/libs/my/typescript/ts-game-toolbox",
+    "@types/p5": "^1.7.6",
+    "p5": "^1.9.0"
   },
   "devDependencies": {
+    "mocha": "^10.2.0",
     "sass": "^1.69.5",
     "typescript": "^5.3.2",
-    "vite": "^5.0.2",
-    "mocha": "^10.2.0"
+    "vite": "^5.0.2"
   }
 }
-

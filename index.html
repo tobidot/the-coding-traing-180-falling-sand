@@ -5,14 +5,75 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$PROJECT_NAME</title>
-    <link rel="stylesheet" href="/src/style.scss">
-    <script async src="/src/index.ts" type="module"></script>
+    <title>180-falling-sand</title>
+    <link rel="stylesheet" href="./src/index.scss">
+    <script async src="./src/index.ts" type="module"></script>
 </head>
 
 <body>
-    <div id="app">
-        <h1>$PROJECT_NAME</h1>        
+    <div id="app"> 
+        <div id="ui">
+            <form id="controls">
+                <group id="tool">
+                    <h3>Tool</h3>
+                    <label>
+                        <input type="radio" name="tool" value="water" checked>
+                        Water
+                    </label>
+                    <label>
+                        <input type="radio" name="tool" value="comet">
+                        Comet
+                    </label>
+                    <label>
+                        <input type="radio" name="tool" value="wall">
+                        Wall
+                    </label>
+                </group>
+                <group id="simulation">
+                    <h3>Simulation</h3>
+                    <label>
+                        <input type="checkbox" id="is-running" checked>
+                        Running
+                    </label>
+                    <!-- <label>
+                        <input type="checkbox" name="gravity">
+                        Gravity
+                    </label>
+                    <label>
+                        <input type="checkbox" name="wind">
+                        Wind
+                    </label> -->
+                </group>
+                <group id="colors">
+                    <h3>Colors</h3>
+                    <label>
+                        Negative
+                        <input type="color" name="negative-start" value="#203040">
+                        <input type="color" name="negative-end" value="#200010">
+                    </label> 
+                    <label>
+                        InActive
+                        <input type="color" name="inactive-start" value="#40C0C0">
+                        <input type="color" name="inactive-end" value="#006060">
+                    </label> 
+                    <label>
+                        Active
+                        <input type="color" name="active-start" value="#6060C0">
+                        <input type="color" name="active-end" value="#000060">
+                    </label>   
+                    <label>
+                        Dense
+                        <input type="color" name="dense-start" value="#C0C000">
+                        <input type="color" name="dense-end" value="#202000">
+                    </label>   
+                    <label>
+                        Wall
+                        <input type="color" name="wall" value="#aa2222">
+                    </label>    
+                </group>
+            </form>
+        </div>  
+        <canvas id="canvas"></canvas> 
     </div>
 </body>
 
