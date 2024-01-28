@@ -1,13 +1,9 @@
-import p5, { Camera } from 'p5';
+import p5 from 'p5';
 import { Renderer } from './Renderer';
 import { Automaton } from './Automaton';
 import { State } from './State';
-import { Empty } from './rules/Empty';
-import { Random } from './rules/Random';
 import { Cell } from './Cell';
 import { Vector2, get_element_by_id } from '@game.object/ts-game-toolbox';
-import { SimpleFall } from './rules/SimpleFall';
-import { StencilRule } from './rules/StencilRule';
 import { StencilReplaceRule } from './rules/StencilReplaceRule';
 import { InputHandler } from './InputHandler';
 
@@ -42,6 +38,7 @@ export class App {
         this.sketch.frameRate(60);
         this.renderer.setup();
         this.input.setup();
+        this.input.reset("noise");
     }
 
     public draw() {
@@ -60,7 +57,8 @@ export class App {
         for (let i = 0; i < cells.length; i++) {
             cells[i] = new Cell(
                 new Vector2(i % width, Math.floor(i / width)),
-                Math.random() > 0.75 ? 1 : 0
+                //Math.random() > 0.75 ? 1 : 0
+                0
             );
         }
         return new State(0, { x: width, y: height }, cells);

@@ -120,10 +120,10 @@
 "@game.object/ts-class-entities@file:../../../../../../libs/my/typescript/ts-class-entities":
   version "0.0.5"
   dependencies:
-    "@game.object/ts-game-toolbox" "file:C:/Users/Objec/AppData/Local/Yarn/Cache/v6/npm-@game-object-ts-class-entities-0.0.5-9ce8aba7-c40e-445c-9214-ae1e95e99ca7-1706036342868/node_modules/@game.object/ts-game-toolbox"
+    "@game.object/ts-game-toolbox" "file:C:/Users/Objec/AppData/Local/Yarn/Cache/v6/npm-@game-object-ts-class-entities-0.0.5-e21b76b9-fd43-4f46-9ba0-9474c21fca4b-1706396401068/node_modules/@game.object/ts-game-toolbox"
 
 "@game.object/ts-game-toolbox@file:../../../../../../libs/my/typescript/ts-game-toolbox":
-  version "4.1.5"
+  version "4.1.6"
   dependencies:
     "@types/assert" "^1.5.6"
     "@types/chai" "^4.3.11"
@@ -900,3 +900,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^3.22.4:
+  version "3.22.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
+  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==

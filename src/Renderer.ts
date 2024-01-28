@@ -3,6 +3,7 @@ import { App } from "./App";
 import { Automaton } from "./Automaton";
 import p5, { Color } from "p5";
 import { Cell } from "./Cell";
+import { half_unit_size, unit_size } from "./rules/StencilReplaceRule";
 
 
 export class Renderer {
@@ -80,24 +81,24 @@ export class Renderer {
             return this.color_settings.wall;
         } else if (cell.value < 0) {
             // negative
-            const factor = Math.atan(Math.abs(cell.value)) * 2 / Math.PI;
+            const factor = Math.atan(Math.abs(cell.value / unit_size)) * 2 / Math.PI;
 
             return sketch.lerpColor(
                 this.color_settings.negative.start,
                 this.color_settings.negative.end,
                 factor
             );
-        } else if (cell.value < 0.5) {
+        } else if (cell.value <= half_unit_size) {
             // inactive
-            const factor = 1 - cell.value * 2;
+            const factor = 1 - cell.value / half_unit_size;
             return sketch.lerpColor(
                 this.color_settings.inactive.start,
                 this.color_settings.inactive.end,
                 factor
             );
-        } else if (cell.value < 1) {
+        } else if (cell.value <= unit_size) {
             // active
-            const factor = cell.value;
+            const factor = cell.value / unit_size;
             return sketch.lerpColor(
                 this.color_settings.active.start,
                 this.color_settings.active.end,
@@ -105,7 +106,7 @@ export class Renderer {
             );
         } else {
             // dense
-            const factor = Math.atan(cell.value) * 2 / Math.PI;
+            const factor = Math.atan(cell.value / unit_size) * 2 / Math.PI;
             return sketch.lerpColor(
                 this.color_settings.dense.start,
                 this.color_settings.dense.end,

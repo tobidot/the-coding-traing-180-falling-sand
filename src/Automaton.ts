@@ -5,7 +5,7 @@ import { Cell } from "./Cell";
 
 export interface Settings {
     initial_state: State,
-    rule: Rule,
+    rule: Rule<any>,
 }
 
 export class Automaton {
@@ -19,23 +19,26 @@ export class Automaton {
         this.props = new Properties(this);
     }
 
-    public get size() : Vector2 {
+    public get size(): Vector2 {
         return new Vector2(this.settings.initial_state.size);
     }
-    
-    public make_state() : State {
+
+    public make_state(
+        callback: (cell: Cell) => Cell = (cell) => cell,
+    ): State {
         return new State(
-            0, 
-            this.size, 
-            [...new Array<Cell>(this.size.x  * this.size.y)].map((_, i)=>{
-                return new Cell(new Vector2(i % this.size.x, Math.floor(i / this.size.x)), 0);
+            0,
+            this.size,
+            [...new Array<Cell>(this.size.x * this.size.y)].map((_, i) => {
+                return callback(new Cell(new Vector2(i % this.size.x, Math.floor(i / this.size.x)), 0));
             })
         );
     }
 
     public start() {
         this.props.time = 0;
-        this.props.current_state = this.settings.initial_state;
+        this.props.current_state = this.settings.initial_state.cpy();
+        this.props.buffer_state = this.settings.initial_state.cpy();
     }
 
     public step() {
@@ -65,5 +68,5 @@ export class Properties {
         this.buffer_state = this.parent.make_state();
         this.current_state = this.parent.make_state();
     }
-    
+
 }

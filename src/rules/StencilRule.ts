@@ -2,16 +2,30 @@ import { Vector2I } from "@game.object/ts-game-toolbox";
 import { Cell } from "../Cell";
 import { Rule } from "../Rule";
 import { State } from "../State";
+import { z } from "zod";
 
 export interface Settings {
     stencil_size: Vector2I;
     sets: Array<Array<string>>;
 }
 
+export const definition_schema = z.object({
+    name: z.literal("StencilRule"),
+    settings: z.object({
+        stencil_size: z.object({
+            x: z.number(),
+            y: z.number(),
+        }),
+        sets: z.array(z.array(z.string())),
+    }),
+});
+
+type Definition = z.infer<typeof definition_schema>;
+
 /**
  * Let them fall
  */
-export class StencilRule extends Rule {
+export class StencilRule extends Rule<Definition> {
 
     public settings: Settings;
     public stencil: Array<Cell | null>;
@@ -27,6 +41,18 @@ export class StencilRule extends Rule {
             sets: StencilRule.make_snow_set(),
         }, settings);
         this.stencil = new Array(9);
+    }
+
+    public name() {
+        return 'StencilRule';
+
+    }
+
+    public definition(): any {
+        return {
+            name: this.name(),
+            settings: structuredClone(this.settings),
+        }
     }
 
     public apply(
@@ -113,5 +139,18 @@ export class StencilRule extends Rule {
                 '*', '*', '*',
             ],
         ];
+    }
+
+
+    public import(definition: Definition): void {
+        this.settings = definition.settings;
+    }
+
+
+    public visualize(): HTMLElement {
+        const $element = document.createElement('div');
+        $element.classList.add('rule-stencil-rule');
+        $element.innerText = 'Definition: StencilRule';
+        return $element;
     }
 }

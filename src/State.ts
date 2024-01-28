@@ -14,4 +14,12 @@ export class State {
         if (position.y < 0 || position.y >= this.size.y) return null;
         return this.cells[position.x + position.y * this.size.x];
     }
+
+    public cpy(): State {
+        return new State(
+            this.time,
+            this.size,
+            this.cells.map((cell) => cell.cpy()),
+        );
+    }
 }

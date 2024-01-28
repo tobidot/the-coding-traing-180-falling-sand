@@ -13,67 +13,220 @@
 <body>
     <div id="app"> 
         <div id="ui">
+            <a href="https://github.com/tobidot/the-coding-traing-180-falling-sand?tab=readme-ov-file">Check out the code at Github</a>
+
             <form id="controls">
                 <group id="tool">
                     <h3>Tool</h3>
                     <label>
                         <input type="radio" name="tool" value="water" checked>
-                        Water
+                        Activate
                     </label>
                     <label>
                         <input type="radio" name="tool" value="comet">
-                        Comet
+                        Super Activate
+                    </label>
+                    <label>
+                        <input type="radio" name="tool" value="vacuum">
+                        Deactivate
                     </label>
                     <label>
                         <input type="radio" name="tool" value="wall">
                         Wall
                     </label>
+                    <label>
+                        <input type="radio" name="tool" value="no_wall">
+                        Remove Wall
+                    </label>
                 </group>
                 <group id="simulation">
                     <h3>Simulation</h3>
                     <label>
+                        <!-- <input type="checkbox" id="is-running" checked> -->
                         <input type="checkbox" id="is-running" checked>
                         Running
                     </label>
-                    <!-- <label>
-                        <input type="checkbox" name="gravity">
-                        Gravity
-                    </label>
                     <label>
-                        <input type="checkbox" name="wind">
-                        Wind
-                    </label> -->
+                        Size
+                        <input type="number" min="3" max="500" step="1" id="width" value="100">
+                        x
+                        <input type="number" min="3" max="500" step="1" id="height" value="100">
+                    </label>
+                    <button type="button" id="reset-noise" data-init="noise">Restart Simulation with noise</button>
+                    <button type="button" id="reset-empty" data-init="empty">Restart Simulation empty</button>
+                    <button type="button" id="rule-dialog-open">Configure Rules</button>
                 </group>
                 <group id="colors">
                     <h3>Colors</h3>
                     <label>
                         Negative
-                        <input type="color" name="negative-start" value="#203040">
-                        <input type="color" name="negative-end" value="#200010">
+                        <input id="negative-start" type="color" name="negative-start" value="#203040">
+                        <input id="negative-end" type="color" name="negative-end" value="#200010">
                     </label> 
                     <label>
                         InActive
-                        <input type="color" name="inactive-start" value="#40C0C0">
-                        <input type="color" name="inactive-end" value="#006060">
+                        <input id="inactive-start" type="color" name="inactive-start" value="#40C0C0">
+                        <input id="inactive-end" type="color" name="inactive-end" value="#006060">
                     </label> 
                     <label>
                         Active
-                        <input type="color" name="active-start" value="#6060C0">
-                        <input type="color" name="active-end" value="#000060">
+                        <input id="active-start" type="color" name="active-start" value="#6060C0">
+                        <input id="active-end"  type="color" name="active-end" value="#000060">
                     </label>   
                     <label>
                         Dense
-                        <input type="color" name="dense-start" value="#C0C000">
-                        <input type="color" name="dense-end" value="#202000">
+                        <input id="dense-start" type="color" name="dense-start" value="#C0C000">
+                        <input id="dense-end"  type="color" name="dense-end" value="#202000">
                     </label>   
                     <label>
                         Wall
-                        <input type="color" name="wall" value="#aa2222">
+                        <input id="wall"  type="color" name="wall" value="#aa2222">
                     </label>    
                 </group>
             </form>
         </div>  
-        <canvas id="canvas"></canvas> 
+        <div id="canvas-wrapper">
+            <canvas id="canvas"></canvas> 
+        </div>
+        <dialog id="rule-dialog">
+            <div class="dialog-inner">
+                <h2>Rules</h2>
+                <div id="explanation">
+                    <h3>Explanation</h3>
+                    <p>
+                        Each cell in the simulation has a state defined by a simple number. Or they are walls / out of bounds.
+                        Rules are applied to each cell in the simulation.
+                        The result may affect neighboring cells as well.
+                        If the condition (first array) is met, the changes (second array) are applied to the cell and its neighbours.
+                        <br>
+                    </p> 
+                    <h4>Conditions</h4>
+                    <ul class="conditions">
+                        <li><b>*</b><span class="rule-visualizer-cell" data-type="*"></span> : Any cell is valid</li>
+                        <li><b>.</b><span class="rule-visualizer-cell" data-type="."></span> : Any cell that is not a wall or out of bounds is valid</li>
+                        <li><b>X</b><span class="rule-visualizer-cell" data-type="X"></span> : Only active (state &gt; 0.5) cells are valid</li>
+                        <li><b>O</b><span class="rule-visualizer-cell" data-type="O"></span> : Only inactive (state &lt; 0.5) cells are valid</li>
+                        <li><b>#</b><span class="rule-visualizer-cell" data-type="#"></span> : Only wall cells are valid</li>
+                    </ul>
+                    <h4>Changes</h4>
+                    <ul>
+                        <li><b>[number]</b> : Change the cell by the given value</li>
+                        <li><b>+/-</b> : Change the value by 0.5 </li>
+                        <li><b>+R/-R</b> : Change by a random value (0 or 0.5) (all R's have the same value whily appliying to a neighbourhood) </li>
+                        <li><b>*</b> : Do not change</li>   
+                    </ul>
+                </div>
+                <div>
+                    <h3>Import Rule</h3>
+                    <label>
+                        Presets:
+                        <select id="rule-presets">
+                            <option value="simple">Simplistic fall</option>
+                            <option value="symetric">Symetric fall</option>
+                            <option value="random">Randomized fall</option>
+                            <option value="complex" selected>Coplex fall</option>
+                            <option value="funhouse">Funhouse</option>
+                        </select>
+                    </label>
+                    <textarea id="rule-import" placeholder="Insert rule-json here"></textarea>  
+                    <h3>Export Rules</h3>    
+                    <textarea id="rule-export" readonly></textarea>  
+                </div>
+                <div style="display: none;">
+                    <!-- Not yet finished -->
+                    <h3>New Rule</h3>
+                    <form id="rule">
+                        <group id="rule-condition">
+                            <h4>Condition</h4>
+                        
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>  
+                        <select>
+                            <option value="*">Any</option>
+                            <option value="X">Active</option>
+                            <option value="O">Inactive</option>
+                            <option value="#">Wall</option>
+                        </select>   
+                    </group>
+                    <group id="rule-apply">
+                        <h4>Apply</h4>
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                        <input type="text" placeholder="0" value="0">
+                    </group>    
+                    <button type="button" >Add</button>
+                    </form>
+                    <h3>Defined Rules</h3>            
+                </div>
+                <div>
+                    <h3>Visualize</h3>
+                    <div id="rule-visualizer"></div>
+                    <template id="rule-visualizer-row-template">
+                        <div class="rule-visualizer-row">
+                            <div class="rule-visualizer-condition"></div>
+                            <span>&gt;</span>
+                            <div class="rule-visualizer-apply"></div>
+                        </div>
+                    </template>
+                    <template id="rule-visualizer-cell-template">
+                        <div class="rule-visualizer-cell" data-type=""></div>
+                    </template>
+                </div>
+                <button type="button" id="rule-dialog-close">X</button>
+            </div>
+        </dialog>
     </div>
 </body>
 

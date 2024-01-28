@@ -13,4 +13,11 @@ export class Cell {
         this.value = value;
         this.fixed = false;
     }
+
+    public cpy(): Cell {
+        return new Cell(
+            this.position.cpy(),
+            this.value
+        );
+    }
 }
