@@ -36,6 +36,7 @@ export class App {
         const canvas = get_element_by_id('canvas', HTMLCanvasElement);
         this.sketch.createCanvas(300, 300, canvas);
         this.sketch.frameRate(60);
+        this.sketch.pixelDensity(1);
         this.renderer.setup();
         this.input.setup();
         this.input.reset("noise");
