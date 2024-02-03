@@ -14,6 +14,7 @@
     "@game.object/ts-game-toolbox": "file:E:/libs/my/typescript/ts-game-toolbox",
     "@types/p5": "^1.7.6",
     "p5": "^1.9.0",
+    "ts-node": "^10.9.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
